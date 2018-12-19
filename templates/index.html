@@ -1,0 +1,67 @@
+<html>
+
+<head>
+
+</head>
+<body>
+<div id="start">
+    <input id="start-btn" type="button" value="START">
+</div>
+
+<div id="game" style="display:none">
+    <h1 id="word">Word Comes Here!</h1>
+    <input id="next-btn" type="button" value="I Know This">
+    <input id="learn-btn" type="button" value="Learn">
+    <input id="finish-btn" type="button" value="Finish">
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script>
+var index=0;
+function getWord(index){
+    $.get( "/word?index="+index, function( data ) {
+    console.log(data.word);
+    $( "#word" ).html( data.word );
+    });
+}
+function learn(){
+    var win = window.open('http://tureng.com/en/turkish-english/'+$("#word").text(), '_blank');
+    if (win) {
+        //Browser has allowed it to be opened
+        win.focus();
+    } else {
+        //Browser has blocked it
+        alert('Please allow popups for this website');
+    }
+}
+
+$( "#start-btn" ).click(function() {
+    getWord(index);
+    $("#start").hide();
+    $("#game").show();
+});
+
+
+$( "#next-btn" ).click(function() {
+    getWord(++index);
+});
+
+$( "#learn-btn" ).click(function() {
+    learn();
+});
+
+
+$( "#finish-btn" ).click(function() {
+    index=0;
+     $.get( "/finish?index="+index, function( data ) {
+         alert(data.result);
+    });
+});
+
+
+</script>
+</body>
+</html>
