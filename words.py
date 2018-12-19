@@ -49,7 +49,7 @@ def get_index():
         index = int(index)
 
     return index
-
+  
 
 if __name__ == '__main__':
     read_words()
