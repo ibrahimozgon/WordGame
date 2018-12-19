@@ -20,11 +20,12 @@
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 <script>
-var index=0;
+window.index=0;
 function getWord(index){
-    $.get( "/word?index="+index, function( data ) {
+    $.get( "/word?index="+window.index, function( data ) {
     console.log(data.word);
     $( "#word" ).html( data.word );
+    window.index=data.index;
     });
 }
 function learn(){
@@ -39,14 +40,14 @@ function learn(){
 }
 
 $( "#start-btn" ).click(function() {
-    getWord(index);
+    getWord(window.index);
     $("#start").hide();
     $("#game").show();
 });
 
 
 $( "#next-btn" ).click(function() {
-    getWord(++index);
+    getWord(++window.index);
 });
 
 $( "#learn-btn" ).click(function() {
@@ -55,9 +56,9 @@ $( "#learn-btn" ).click(function() {
 
 
 $( "#finish-btn" ).click(function() {
-    index=0;
-     $.get( "/finish?index="+index, function( data ) {
+     $.get( "/finish?index="+window.index, function( data ) {
          alert(data.result);
+         window.index=data.index;
     });
 });
 

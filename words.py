@@ -19,12 +19,7 @@ def home():
 
 @app.route("/word", methods=["GET"])
 def get_word():
-    index = flask.request.args.get("index")
-    if not index:
-        index = 0
-    else:
-        index = int(index)
-
+    index = get_index()
     return flask.jsonify({
         "word": words[index],
         "index": index
@@ -33,18 +28,27 @@ def get_word():
 
 @app.route("/finish", methods=["GET"])
 def finish_process():
+    index = get_index()
+    rate = int(round(((index + 1) * 100) / len(words)))
+    result = {
+        "rate": rate,
+        "result": "You have completed {}% of test!".format(rate),
+        "index": index
+    }
+    return flask.jsonify(result)
+
+
+def get_index():
     index = flask.request.args.get("index")
     if not index:
         index = 0
+    elif int(index) >= len(words):
+        index = 0
+        random.shuffle(words)
     else:
         index = int(index)
-    count = len(words) < (index + 1) and len(words) or (index + 1)
-    rate = int(round(((index + 1) * 100) / count))
-    result = {
-        "rate": rate,
-        "result": "You have completed {}% of test!".format(rate)
-    }
-    return flask.jsonify(result)
+
+    return index
 
 
 if __name__ == '__main__':
