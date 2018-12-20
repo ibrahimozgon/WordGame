@@ -1,68 +1,67 @@
 <html>
 
 <head>
-
+    <link rel="stylesheet" href="static/style/index.css"/>
 </head>
+
 <body>
-<div id="start">
-    <input id="start-btn" type="button" value="START">
-</div>
+    <div id="start">
+        <input id="start-btn" type="button" value="START">
+    </div>
 
-<div id="game" style="display:none">
-    <h1 id="word">Word Comes Here!</h1>
-    <input id="next-btn" type="button" value="I Know This">
-    <input id="learn-btn" type="button" value="Learn">
-    <input id="finish-btn" type="button" value="Finish">
-</div>
+    <div id="game" style="display:none">
+        <h1 id="word">Word Comes Here!</h1>
+        <input id="next-btn" type="button" value="I Know This">
+        <input id="learn-btn" type="button" value="Learn">
+        <input id="finish-btn" type="button" value="Finish">
+    </div>
 
-<script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
-<script>
-window.index=0;
-function getWord(index){
-    $.get( "/word?index="+window.index, function( data ) {
-    console.log(data.word);
-    $( "#word" ).html( data.word );
-    window.index=data.index;
-    });
-}
-function learn(){
-    var win = window.open('http://tureng.com/en/turkish-english/'+$("#word").text(), '_blank');
-    if (win) {
-        //Browser has allowed it to be opened
-        win.focus();
-    } else {
-        //Browser has blocked it
-        alert('Please allow popups for this website');
-    }
-}
+    <script>
+        window.index = 0; // global Object container; don't use var
+        function getWord(index) {
+            $.get("/word?index=" + window.index, function (data) { /*A string containing the URL to which the request is sent*/
+                console.log(data.word);
+                $("#word").html(data.word); /*word id li h1 alanına gelen datayı bas-> data word ve index içeriyor*/
+                window.index = data.index; //data returns index and word
+            });
+        }
 
-$( "#start-btn" ).click(function() {
-    getWord(window.index);
-    $("#start").hide();
-    $("#game").show();
-});
+        function learn() {
+            var win = window.open('http://tureng.com/en/turkish-english/' + $("#word").text(), '_blank');
+            if (win) {
+                //Browser has allowed it to be opened
+                win.focus();
+            } else {
+                //Browser has blocked it
+                alert('Please allow popups for this website');
+            }
+        }
 
-
-$( "#next-btn" ).click(function() {
-    getWord(++window.index);
-});
-
-$( "#learn-btn" ).click(function() {
-    learn();
-});
+        $("#start-btn").click(function () {
+            getWord(window.index);
+            $("#start").hide();
+            $("#game").show();
+        });
 
 
-$( "#finish-btn" ).click(function() {
-     $.get( "/finish?index="+window.index, function( data ) {
-         alert(data.result);
-         window.index=data.index;
-    });
-});
+        $("#next-btn").click(function () {
+            getWord(++window.index);
+        });
+
+        $("#learn-btn").click(function () {
+            learn();
+        });
 
 
-</script>
+        $("#finish-btn").click(function () {
+            $.get("/finish?index=" + window.index, function (data) {
+                alert(data.result);
+                window.index = data.index;
+            });
+        });
+    </script>
 </body>
+
 </html>
