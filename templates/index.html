@@ -1,19 +1,43 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="static/style/index.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}"/>
+    <title>Word Game</title>
+    <link rel="shourtcut icon" href="{{ url_for('static', filename='pics/word.png') }}"/>
 </head>
 
 <body>
-    <div id="start">
-        <input id="start-btn" type="button" value="START">
+        <div id="brief">
+                <label>Click button to start the word game !!!</label>
+        </div>
+    <div id="start" >
+        <input id="start-btn" class="btn" type="button" value="START">
     </div>
 
-    <div id="game" style="display:none">
-        <h1 id="word">Word Comes Here!</h1>
-        <input id="next-btn" type="button" value="I Know This">
-        <input id="learn-btn" type="button" value="Learn">
-        <input id="finish-btn" type="button" value="Finish">
+    
+
+    
+
+    <div id="content" style="display:none">
+        <div id="explanation" class="content1">
+            <label class="btn-name"><span class="btnaction">* I Know This : </span><span class="meaning">Pass to other word</span> </label>      
+            <label class="btn-name"><span class="btnaction">* Learn This Word : </span><span class="meaning">Go to tureng to see the meaning</span></label>       
+            <label class="btn-name"><span class="btnaction">* Finish : </span><span class="meaning">See your completion percentage!</span></label>
+        </div>
+        <div class="content1"> <input class="btn action" id="finish-btn" type="button" value="Finish"> </div>
+        <div id="wordbox" class="content1">
+            <h1 id="word">Word Comes Here!</h1>
+        </div>
+        
+        <div class="content1" style="display:flex"> 
+            
+            <div id="next"><input id="next-btn" class="btn action"  type="button" value="I Know This"> </div> 
+            <div id="learn"><input id="learn-btn" class="btn action"  type="button" value="Learn"></div> 
+
+        </div>
+        
+        
+        
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -42,7 +66,8 @@
         $("#start-btn").click(function () {
             getWord(window.index);
             $("#start").hide();
-            $("#game").show();
+            $("#brief").hide();
+            $("#content").show();
         });
 
 
